@@ -18,7 +18,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.HomeActivity"></activity>
+        <activity
+            android:name=".activities.HomeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <!-- firebase messaging service -->
+        <service android:name=".services.firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- firebase instance id service -->
+        <service android:name=".services.firebase.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- notification icon -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />s
+
     </application>
 
 </manifest>

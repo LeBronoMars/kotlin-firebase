@@ -68,7 +68,7 @@ dependencies {
         exclude module: 'support-v4'
         exclude module: 'support-annotations'
     }
-    
+
     //firebase core
     compile "com.google.firebase:firebase-core:$rootProject.ext.firebaseVersion"
 
