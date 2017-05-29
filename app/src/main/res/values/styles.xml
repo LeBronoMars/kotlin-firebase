@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="FloatingLabelStyle" parent="TextAppearance.AppCompat">
+        //hint color And Label Color in False State
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
+    <style name="FieldsStyle" parent="AppTheme">
+        //hint color And Label Color in False State
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="android:textColor">@android:color/black</item>
+        //Label color in True State And Bar Color False And True State
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="colorControlActivated">@android:color/black</item>
+    </style>
+
+    <!-- dialog animation -->
+    <style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+</resources>

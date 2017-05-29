@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">KotlinApp</string>
+
+    <!-- login screen -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+
+    <!-- create group dialog fragment -->
+    <string name="create_group_header">Add new group</string>
+    <string name="group_name">Group name</string>
+    <string name="group_description">Group description (Optional)</string>
+    <string name="create_group">Create Group</string>
+    <string name="update_group_header">Upgrade group details</string>
+    <string name="update_group">Update Group</string>
+
+</resources>
