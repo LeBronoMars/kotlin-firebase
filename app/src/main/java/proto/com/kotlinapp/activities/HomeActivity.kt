@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_home.*
 import proto.com.kotlinapp.R
 import proto.com.kotlinapp.adapters.GroupsAdapter
