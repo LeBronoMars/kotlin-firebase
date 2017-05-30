@@ -9,9 +9,11 @@ import proto.com.kotlinapp.interfaces.ViewType
  * Created by rsbulanon on 5/23/17.
  */
 class Group : ViewType, Parcelable {
-    var groupName: String = "aaaaaaaa"
+    var id: String = ""
 
-    var groupDescription: String = "bbbbbbbb"
+    var groupName: String = ""
+
+    var groupDescription: String = ""
 
     var membersCount: Int = 0
 

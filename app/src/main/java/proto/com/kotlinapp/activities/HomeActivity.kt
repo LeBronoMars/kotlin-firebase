@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_home.*
 import proto.com.kotlinapp.R
 import proto.com.kotlinapp.adapters.GroupsAdapter
@@ -25,6 +24,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
 
     private var fireBaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var dataReference: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private var selectedGroupPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +35,8 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsAdapter(object : GroupDelegateAdapter.OnSelectGroupListener {
                 override fun onSelectedGroup(group: Group, position: Int) {
+                    selectedGroupPosition = position
+
                     val builderSingle = AlertDialog.Builder(context)
                     builderSingle.setTitle(group.groupName)
 
@@ -51,7 +53,23 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                             createDialogFragment.setOnCreateGroupListener(object : CreateGroupDialogFragment.OnCreateGroupListener {
                                 override fun onCreateGroup(groupName: String, description: String) {
                                     createDialogFragment.dismiss()
+                                    dataReference.child(FirebaseConstants.GROUP).child(groupName)
+                                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                                override fun onCancelled(p0: DatabaseError?) {
+                                                }
 
+                                                override fun onDataChange(p0: DataSnapshot?) {
+                                                    when (p0?.exists()) {
+                                                        true -> showToast("Group already exist")
+                                                        false -> {
+                                                            val previousGroupName: String = group.groupName
+                                                            group.groupName = groupName
+                                                            group.groupDescription = description
+                                                            dataReference.child(FirebaseConstants.GROUP).child(group.id).setValue(group)
+                                                        }
+                                                    }
+                                                }
+                                            })
                                 }
                             })
                             createDialogFragment.show(supportFragmentManager, CreateGroupDialogFragment::class.qualifiedName)
@@ -67,6 +85,17 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
             })
         }
 
+        showProgressDialog(null, "Loading groups, Please wait...", false)
+        dataReference.child(FirebaseConstants.GROUP).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                dismissProgressDialog()
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                dismissProgressDialog()
+            }
+        })
+
         //fetch groups from fire base
         dataReference.child(FirebaseConstants.GROUP).addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -78,7 +107,8 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
             }
 
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("update", "on child changed called")
+                manageGroup(p0, "update")
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
@@ -101,12 +131,13 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                         members.add(Member(uid, displayName, photoUrl.toString()))
                         //val group: Group = Group(groupName, description, 1, members)
                         val group: Group = Group()
+                        group.id = UUID.randomUUID().toString()
                         group.groupName = groupName
                         group.groupDescription = description
                         group.membersCount = 1
                         group.members = members
 
-                        dataReference.child(FirebaseConstants.GROUP).child(groupName)
+                        dataReference.child(FirebaseConstants.GROUP).child(group.id)
                                 .addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onCancelled(p0: DatabaseError?) {
                                     }
@@ -114,7 +145,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                                     override fun onDataChange(p0: DataSnapshot?) {
                                         when (p0?.exists()) {
                                             true -> showToast("Group already exist")
-                                            false -> dataReference.child(FirebaseConstants.GROUP).child(groupName).setValue(group)
+                                            false -> dataReference.child(FirebaseConstants.GROUP).child(group.id).setValue(group)
                                         }
                                     }
                                 })
@@ -147,6 +178,8 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                         } else if (action.equals("remove")) {
                             Log.d("delete", "must remove group")
                             (rv_groups.adapter as GroupsAdapter).removeGroup(group)
+                        } else if (action.equals("update")) {
+                            (rv_groups.adapter as GroupsAdapter).updateGroup(group)
                         }
                     }
                 }

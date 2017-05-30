@@ -58,8 +58,18 @@ class GroupsAdapter(val listener: GroupDelegateAdapter.OnSelectGroupListener) : 
 
     fun removeGroup(group: Group) {
         items.forEachIndexed { index, viewType ->
-            if ((viewType as Group).groupName.equals(group.groupName)) {
+            if ((viewType as Group).id.equals(group.id)) {
                 items.removeAt(index)
+                notifyDataSetChanged()
+                return
+            }
+        }
+    }
+
+    fun updateGroup(group: Group) {
+        items.forEachIndexed { index, viewType ->
+            if ((viewType as Group).id.equals(group.id)) {
+                items.set(index, group)
                 notifyDataSetChanged()
                 return
             }

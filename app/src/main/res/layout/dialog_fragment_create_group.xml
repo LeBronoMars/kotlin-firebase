@@ -30,6 +30,7 @@
             android:layout_height="match_parent"
             android:hint="@string/group_name"
             android:imeOptions="actionNext"
+            android:singleLine="true"
             android:inputType="textCapSentences"
             android:maxLines="1"
             android:textSize="@dimen/_11sdp" />
@@ -50,6 +51,7 @@
             android:layout_height="match_parent"
             android:hint="@string/group_description"
             android:imeOptions="actionDone"
+            android:singleLine="true"
             android:maxLines="1"
             android:textSize="@dimen/_11sdp" />
     </android.support.design.widget.TextInputLayout>
