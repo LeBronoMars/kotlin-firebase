@@ -19,4 +19,13 @@
     <string name="display_name">Display Name</string>
     <string name="register">Register</string>
 
+    <!-- navigation drawer -->
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
+    <string name="welcome">Welcome!</string>
+
+    <!-- side drawer menu -->
+    <string name="side_drawer_menu_change_password">Change Password</string>
+    <string name="side_drawer_menu_logout">Log Out</string>
+
 </resources>

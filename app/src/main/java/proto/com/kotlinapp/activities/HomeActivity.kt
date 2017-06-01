@@ -3,8 +3,10 @@ package proto.com.kotlinapp.activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -26,12 +28,13 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
     private var fireBaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var dataReference: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var selectedGroupPosition: Int = 0
+    private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        setToolbarTitle("Groups", false)
+        initSideDrawerMenu()
 
         //init groups recycler view
         rv_groups.apply {
@@ -65,7 +68,6 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                                                     when (p0?.exists()) {
                                                         true -> showToast("Group already exist")
                                                         false -> {
-                                                            val previousGroupName: String = group.groupName
                                                             group.groupName = groupName
                                                             group.groupDescription = description
                                                             dataReference.child(FirebaseConstants.GROUPS).child(group.id).setValue(group)
@@ -189,5 +191,23 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
             }
             false -> Log.d("group", "groups not existing")
         }
+    }
+
+    fun initSideDrawerMenu() {
+        setSupportActionBar(tb_header)
+        setToolbarTitle("Groups", false)
+
+        actionBarDrawerToggle = object : ActionBarDrawerToggle(this, dl_side_menu, tb_header,
+                R.string.open_drawer, R.string.close_drawer) {
+            override fun onDrawerOpened(drawerView: View?) {
+                super.onDrawerOpened(drawerView)
+            }
+
+            override fun onDrawerClosed(drawerView: View?) {
+                super.onDrawerClosed(drawerView)
+            }
+        }
+        dl_side_menu.addDrawerListener(actionBarDrawerToggle!!)
+        actionBarDrawerToggle!!.syncState()
     }
 }

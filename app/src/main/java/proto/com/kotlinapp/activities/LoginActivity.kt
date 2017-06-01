@@ -35,13 +35,15 @@ class LoginActivity : BaseActivity() {
             } else if (TextUtils.isEmpty(password)) {
                 setError(et_password, AppConstants.WARN_FIELD_REQUIRED)
             } else {
+                showProgressDialog("Login", "Checking your credentials, Please wait...", false)
                 fireBaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                    dismissProgressDialog()
                     when (task.exception) {
                         null -> when(task.isComplete) {
                             true -> moveToHomeScreen()
                             false -> Toast.makeText(this, "Unable to login, Please try again.", Toast.LENGTH_SHORT).show()
                         }
-                        else -> Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
+                        else -> showConfirmDialog(null, "Login Failed", task.exception?.message!!, "Close", null, null, true)
                     }
                 }
             }

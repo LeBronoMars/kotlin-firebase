@@ -10,8 +10,9 @@
         android:id="@+id/tv_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:padding="@dimen/_10sdp"
+        android:textSize="@dimen/_13sdp"
         android:text="@string/create_group_header"
         android:textColor="@android:color/white" />
 
