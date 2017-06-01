@@ -4,6 +4,7 @@ import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.ViewGroup
+import com.google.firebase.analytics.FirebaseAnalytics
 import proto.com.kotlinapp.commons.AdapterConstants
 import proto.com.kotlinapp.delegates.GroupDelegateAdapter
 import proto.com.kotlinapp.interfaces.ViewType

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -9,29 +8,48 @@
     android:orientation="vertical"
     android:padding="@dimen/_5sdp">
 
-
-    <EditText
-        android:id="@+id/et_email"
+    <!-- email -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:imeOptions="actionNext"
-        android:inputType="textEmailAddress"
-        android:singleLine="true"
-        android:textColor="@android:color/black" />
+        android:layout_marginTop="@dimen/_25sdp"
+        android:theme="@style/FieldsStyle"
+        app:hintTextAppearance="@style/FloatingLabelStyle"
+        app:passwordToggleEnabled="false">
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+    </android.support.design.widget.TextInputLayout>
 
 
-    <EditText
-        android:id="@+id/et_password"
+    <!-- password -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:hint="@string/password"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:singleLine="true"
-        android:textColor="@android:color/black" />
+        android:layout_marginTop="@dimen/_25sdp"
+        android:theme="@style/FieldsStyle"
+        app:hintTextAppearance="@style/FloatingLabelStyle"
+        app:passwordToggleEnabled="true">
 
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="@string/password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/btn_login"
@@ -41,4 +59,12 @@
         android:text="@string/login"
         android:textColor="@android:color/black" />
 
+    <TextView
+        android:id="@+id/tv_create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/create_my_account"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_12sdp" />
 </LinearLayout>

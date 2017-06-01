@@ -5,6 +5,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="create_my_account">Create my account</string>
 
     <!-- create group dialog fragment -->
     <string name="create_group_header">Add new group</string>

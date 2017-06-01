@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.widget.ArrayAdapter
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
@@ -75,8 +76,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                             createDialogFragment.show(supportFragmentManager, CreateGroupDialogFragment::class.qualifiedName)
                         } else if (position == 2) {
                             //delete
-                            Log.d("delete", "must delete this group ${group.groupName}")
-                            dataReference.child(FirebaseConstants.GROUP).child(group.groupName).removeValue()
+                            dataReference.child(FirebaseConstants.GROUP).child(group.id).removeValue()
                         }
                     }
                     builderSingle.setPositiveButton("cancel", { dialog, which -> dialog.dismiss() })
@@ -174,6 +174,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                     val group: Group = group.getValue(Group::class.java)
                     rv_groups?.let {
                         if (action.equals("add")) {
+                            FirebaseAnalytics.getInstance(baseContext).setUserProperty("favorite_group", group.groupName)
                             (rv_groups.adapter as GroupsAdapter).addGroup(group)
                         } else if (action.equals("remove")) {
                             Log.d("delete", "must remove group")
