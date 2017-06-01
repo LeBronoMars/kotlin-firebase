@@ -57,7 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
         android:text="@string/login"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        style="@style/Widget.AppCompat.Button.Colored" />
 
     <TextView
         android:id="@+id/tv_create_account"

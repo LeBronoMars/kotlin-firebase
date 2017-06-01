@@ -5,4 +5,5 @@ package proto.com.kotlinapp.commons
  */
 object AppConstants {
     val WARN_FIELD_REQUIRED = "This field is required.";
+    val WARN_CONNECTION = "Please check your network connection error and try again.";
 }

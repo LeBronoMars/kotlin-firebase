@@ -15,4 +15,8 @@
     <string name="update_group_header">Upgrade group details</string>
     <string name="update_group">Update Group</string>
 
+    <!-- user registration -->
+    <string name="display_name">Display Name</string>
+    <string name="register">Register</string>
+
 </resources>

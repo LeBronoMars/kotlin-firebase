@@ -31,6 +31,8 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        setToolbarTitle("Groups", false)
+
         //init groups recycler view
         rv_groups.apply {
             layoutManager = LinearLayoutManager(context)
@@ -54,7 +56,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                             createDialogFragment.setOnCreateGroupListener(object : CreateGroupDialogFragment.OnCreateGroupListener {
                                 override fun onCreateGroup(groupName: String, description: String) {
                                     createDialogFragment.dismiss()
-                                    dataReference.child(FirebaseConstants.GROUP).child(groupName)
+                                    dataReference.child(FirebaseConstants.GROUPS).child(groupName)
                                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                                 override fun onCancelled(p0: DatabaseError?) {
                                                 }
@@ -66,7 +68,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                                                             val previousGroupName: String = group.groupName
                                                             group.groupName = groupName
                                                             group.groupDescription = description
-                                                            dataReference.child(FirebaseConstants.GROUP).child(group.id).setValue(group)
+                                                            dataReference.child(FirebaseConstants.GROUPS).child(group.id).setValue(group)
                                                         }
                                                     }
                                                 }
@@ -76,7 +78,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                             createDialogFragment.show(supportFragmentManager, CreateGroupDialogFragment::class.qualifiedName)
                         } else if (position == 2) {
                             //delete
-                            dataReference.child(FirebaseConstants.GROUP).child(group.id).removeValue()
+                            dataReference.child(FirebaseConstants.GROUPS).child(group.id).removeValue()
                         }
                     }
                     builderSingle.setPositiveButton("cancel", { dialog, which -> dialog.dismiss() })
@@ -86,7 +88,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
         }
 
         showProgressDialog(null, "Loading groups, Please wait...", false)
-        dataReference.child(FirebaseConstants.GROUP).addListenerForSingleValueEvent(object: ValueEventListener {
+        dataReference.child(FirebaseConstants.GROUPS).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
                 dismissProgressDialog()
             }
@@ -97,7 +99,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
         })
 
         //fetch groups from fire base
-        dataReference.child(FirebaseConstants.GROUP).addChildEventListener(object : ChildEventListener {
+        dataReference.child(FirebaseConstants.GROUPS).addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -137,7 +139,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                         group.membersCount = 1
                         group.members = members
 
-                        dataReference.child(FirebaseConstants.GROUP).child(group.id)
+                        dataReference.child(FirebaseConstants.GROUPS).child(group.id)
                                 .addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onCancelled(p0: DatabaseError?) {
                                     }
@@ -145,7 +147,7 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
                                     override fun onDataChange(p0: DataSnapshot?) {
                                         when (p0?.exists()) {
                                             true -> showToast("Group already exist")
-                                            false -> dataReference.child(FirebaseConstants.GROUP).child(group.id).setValue(group)
+                                            false -> dataReference.child(FirebaseConstants.GROUPS).child(group.id).setValue(group)
                                         }
                                     }
                                 })
