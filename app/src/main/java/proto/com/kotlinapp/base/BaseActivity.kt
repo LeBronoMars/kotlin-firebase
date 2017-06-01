@@ -1,6 +1,7 @@
 package proto.com.kotlinapp.base
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
@@ -66,4 +67,19 @@ abstract class BaseActivity : AppCompatActivity() {
     fun animateToUp() {
         overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top)
     }
+
+    fun moveToOtherActivity(clz: Class<*>) {
+        val intent = Intent(this, clz)
+        startActivity(intent)
+        animateToLeft()
+    }
+
+    fun setToolbarTitle(title: String?, showHomeEnabled: Boolean) {
+        title?.let {
+            supportActionBar!!.title = title
+        }
+        supportActionBar!!.setDisplayHomeAsUpEnabled(showHomeEnabled)
+        supportActionBar!!.setDisplayShowHomeEnabled(showHomeEnabled)
+    }
+
 }

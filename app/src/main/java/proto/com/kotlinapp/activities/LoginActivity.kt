@@ -20,6 +20,8 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        setToolbarTitle("Login", false)
+
         fireBaseAuth.currentUser?.let {
             moveToHomeScreen()
         }
@@ -43,6 +45,10 @@ class LoginActivity : BaseActivity() {
                     }
                 }
             }
+        }
+
+        tv_create_account.setOnClickListener {
+            moveToOtherActivity(RegistrationActivity::class.java)
         }
     }
 
