@@ -7,10 +7,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.*
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_home.*
 import proto.com.kotlinapp.R
 import proto.com.kotlinapp.adapters.GroupsAdapter
@@ -20,6 +23,7 @@ import proto.com.kotlinapp.delegates.GroupDelegateAdapter
 import proto.com.kotlinapp.fragments.CreateGroupDialogFragment
 import proto.com.kotlinapp.models.Group
 import proto.com.kotlinapp.models.Member
+import proto.com.kotlinapp.utils.StackBlurTransformation
 import java.util.*
 
 
@@ -29,6 +33,9 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
     private var dataReference: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var selectedGroupPosition: Int = 0
     private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
+    private var pb_load_image: ProgressBar? = null
+    private var iv_blur_background: ImageView? = null
+    private var civ_profile_pic: CircleImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,5 +216,52 @@ class HomeActivity : BaseActivity(), CreateGroupDialogFragment.OnCreateGroupList
         }
         dl_side_menu.addDrawerListener(actionBarDrawerToggle!!)
         actionBarDrawerToggle!!.syncState()
+
+        val view = layoutInflater.inflate(R.layout.navigation_header, null, false)
+        civ_profile_pic = view.findViewById(R.id.civ_profile_pic) as CircleImageView
+        pb_load_image = view.findViewById(R.id.pb_load_image) as ProgressBar
+        iv_blur_background = view.findViewById(R.id.iv_blur_background) as ImageView
+        val tv_full_name = view.findViewById(R.id.tv_full_name) as TextView
+
+        val firebaseUser = fireBaseAuth.getCurrentUser()
+
+        tv_full_name.text = firebaseUser!!.displayName
+
+        Picasso.with(this)
+                .load(firebaseUser!!.photoUrl)
+                .transform(StackBlurTransformation(this, 25, 1))
+                .into(iv_blur_background)
+
+        Picasso.with(this)
+                .load(firebaseUser!!.photoUrl)
+                .fit()
+                .into(civ_profile_pic, object : Callback {
+                    override fun onSuccess() {
+                        pb_load_image!!.visibility = View.GONE
+                    }
+
+                    override fun onError() {
+                        pb_load_image!!.visibility = View.GONE
+                    }
+                })
+
+        val screenHeight = getScreenDimension("height")
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                (screenHeight * .4).toInt())
+
+        nv_side_menu.addHeaderView(view)
+        nv_side_menu.inflateMenu(R.menu.menu_side_drawer)
+        nv_side_menu.getHeaderView(0).layoutParams = params
+
+        nv_side_menu.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_change_password -> {
+                }
+                R.id.menu_logout -> {
+                }
+            }
+            dl_side_menu.closeDrawers()
+            true
+        }
     }
 }

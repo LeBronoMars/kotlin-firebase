@@ -47,4 +47,7 @@ ext {
 
     //sdp
     sdpVersion = '1.0.3'
+
+    //circle image view
+    circleImageView = '2.1.0'
 }

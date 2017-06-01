@@ -3,6 +3,7 @@ package proto.com.kotlinapp.base
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.net.ConnectivityManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -125,6 +126,13 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
+    }
+
+    fun getScreenDimension(what: String): Int {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        return if (what == "height") size.y else size.x
     }
 
 }
